@@ -53,7 +53,7 @@ public function get_preview_id( $post_id )
 {
     global $post;
     $preview_id = 0;
-    if ($post->ID == $post_id && is_preview()
+    if (isset($post->ID) && intval($post->ID) === intval($post_id) && is_preview()
             && $preview = wp_get_post_autosave($post->ID)) {
         $preview_id = $preview->ID;
     }
@@ -62,7 +62,7 @@ public function get_preview_id( $post_id )
 
 public function get_post_metadata( $return, $post_id, $meta_key, $single ) {
     if ($preview_id = $this->get_preview_id($post_id)) {
-        if ($post_id != $preview_id) {
+        if ($post_id !== $preview_id) {
             $return = get_post_meta($preview_id, $meta_key, $single);
         }
     }
@@ -71,6 +71,14 @@ public function get_post_metadata( $return, $post_id, $meta_key, $single ) {
 
 public function wp_insert_post($post_ID)
 {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (defined('DOING_AJAX') && DOING_AJAX) {
+        return;
+    }
+
     if (wp_is_post_revision($post_ID)) {
         global $wpdb;
         global $cfs;
