@@ -25,19 +25,24 @@ public function plugins_loaded()
     add_filter('get_post_metadata', array($this, 'get_post_metadata'), 10, 4 );
 
     add_shortcode('cfs_get', function($p){
-        return self::get($p['key']);
+        extract(shortcode_atts(array(
+            'key' => false,
+            'id' => 0,
+            'format' => array(),
+        ), $p));
+        return self::get($key, $id, $format);
     });
 }
 
-public function get($key, $id = false)
+public function get($key, $id = 0, $format = array())
 {
     global $cfs;
     if (intval($id)) {
-        return $cfs->get($key, $id);
+        return $cfs->get($key, $id, $format);
     } elseif ($id = $this->get_preview_id(get_the_ID())) {
-        return $cfs->get($key, $id);
+        return $cfs->get($key, $id, $format);
     } else {
-        return $cfs->get($key, get_the_ID());
+        return $cfs->get($key, get_the_ID(), $format);
     }
 }
 
