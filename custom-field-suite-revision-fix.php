@@ -29,10 +29,12 @@ public function plugins_loaded()
     });
 }
 
-public function get($key)
+public function get($key, $id = false)
 {
     global $cfs;
-    if ($id = $this->get_preview_id(get_the_ID())) {
+    if (intval($id)) {
+        return $cfs->get($key, $id);
+    } elseif ($id = $this->get_preview_id(get_the_ID())) {
         return $cfs->get($key, $id);
     } else {
         return $cfs->get($key, get_the_ID());
