@@ -37,8 +37,8 @@ public function plugins_loaded()
 public function get($key, $id = 0, $format = array())
 {
     global $cfs;
-    if (intval($id)) {
-        return $cfs->get($key, $id, $format);
+    if (intval($this->get_preview_id($id))) {
+        return $cfs->get($key, $this->get_preview_id($id), $format);
     } elseif ($id = $this->get_preview_id(get_the_ID())) {
         return $cfs->get($key, $id, $format);
     } else {
