@@ -9,7 +9,7 @@ Author URI: http://firegoby.jp/
 */
 
 
-$csf_fix = new Custom_Field_Suite_Fix();
+$cfs_fix = new Custom_Field_Suite_Fix();
 
 class Custom_Field_Suite_Fix {
 
